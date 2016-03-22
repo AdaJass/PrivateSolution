@@ -8,14 +8,14 @@
 def getPW():
     global passw
     try:
-        with open('c:/IMPORTANT','r',encoding='utf-8') as f: 
+        with open('IMPORTANT','r',encoding='utf-8') as f: 
             passw=f.read()
 
     except:        
         passw=input('请输入密码：\n')
-        with open('c:/IMPORTANT','w',encoding='utf-8') as f:
+        with open('IMPORTANT','w',encoding='utf-8') as f:
             f.write(passw)
-            os.system('attrib +s +r +h +a c:/IMPORTANT')   
+            os.system('attrib +s +r +h +a IMPORTANT')   
 
 def decrypt(outfile):
         '''indicates that the input text should be number only '''          
@@ -47,8 +47,16 @@ def decrypt(outfile):
 
 if __name__ == "__main__":    
     from pathlib import Path as p, PurePath as pp
-    if p('./EncryptedFiles').is_dir():    
-        for x in p('./EncryptedFiles').iterdir():
+    try:
+        with open('filename.txt','r') as f:
+            ss=f.read()
+    except:
+        ss=input('请输入要解密文件夹名称：\n')
+        with open('filename.txt','w') as f:
+            f.write(ss)
+
+    if p('./'+ss).is_dir():    
+        for x in p('./'+ss).iterdir():
             if x.is_file():
                 plist=['*.py', '*.txt', '*.js', '*.cpp', '*.c', '*.html','*.json', '*.bat']
                 match=False
@@ -59,4 +67,4 @@ if __name__ == "__main__":
                 if match:
                     readFile(str(x))
                     getPW()
-                    decrypt(str(x.name))     
+                    decrypt(str(x.name))      

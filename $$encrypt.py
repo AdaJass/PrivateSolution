@@ -10,14 +10,14 @@ def readFile(filename):
 def getPW():
     global passw
     try:
-        with open('c:/IMPORTANT','r') as f: 
-            passw=f.read()
-
+        f=open('IMPORTANT','r')
+        passw=f.read()
+        f.close()
     except:        
         passw=input('请输入密码：\n')
-        with open('c:/IMPORTANT','w') as f:
+        with open('IMPORTANT','w') as f:
             f.write(passw)
-            os.system('attrib +s +r +h +a c:/IMPORTANT')   
+            os.system('attrib +s +r +h +a IMPORTANT')   
 
 
 def encrypt(outfile):
@@ -45,7 +45,14 @@ def encrypt(outfile):
 if __name__ == "__main__":    
     from pathlib import Path as p
     try:
-        p('./EncryptedFiles').mkdir()
+        with open('filename.txt',r) as f:
+            ss=ff.read()
+    except:
+        ss=input('请输入github对应仓库名！\n')
+        with open('filename.txt','w') as f:
+            f.write(ss)
+    try:
+        p('./'+ss).mkdir()
     except:
         pass
     for x in p('.').iterdir():
@@ -59,6 +66,6 @@ if __name__ == "__main__":
             if match:
                 readFile(str(x))
                 getPW()
-                encrypt('./EncryptedFiles/'+str(x))
+                encrypt('./'+ss+'/'+str(x))
 
-         
+          
