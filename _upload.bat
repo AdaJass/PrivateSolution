@@ -7,4 +7,4 @@ git commit -a -m "auto commit"
 git remote add origin https://github.com/AdaJass/EncryptedFiles.git
 git push -u origin master
 pause
-     
+  
