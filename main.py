@@ -31,4 +31,4 @@ if __name__ == '__main__':
         fetchData(calendar_url, pd.Calendar)
     ]    
     loop.run_until_complete(asyncio.wait(tasks))
-    loop.close() 
+    loop.close()  

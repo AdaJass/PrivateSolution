@@ -15,7 +15,7 @@ def getPW():
         passw=input('请输入密码：\n')
         with open('IMPORTANT','w',encoding='utf-8') as f:
             f.write(passw)
-            os.system('attrib +r +a IMPORTANT')   
+            os.system('attrib +s +h +r +a IMPORTANT')   
 
 def decrypt(outfile):
         '''indicates that the input text should be number only '''          
@@ -45,11 +45,12 @@ def decrypt(outfile):
             f.write(texto)
         pass
 
-if __name__ == "__main__":  
+if __name__ == "__main__":   
     import os
     import sys        
-    os.chdir(sys.path[0])  
+    os.chdir(sys.path[0])
     from pathlib import Path as p, PurePath as pp
+    os.chdir(sys.path[0]) 
     try:
         with open('filename.txt','r') as f:
             ss=f.read().strip()

@@ -1,4 +1,8 @@
-﻿def readFile(filename):
+﻿
+import os
+import sys
+
+def readFile(filename):
     with open(filename,'r', encoding='utf-8') as f:
         global inputext
         print(filename)
@@ -14,7 +18,7 @@ def getPW():
         passw=input('请输入密码：\n')
         with open('IMPORTANT','w') as f:
             f.write(passw)
-            os.system('attrib +r +a IMPORTANT')   
+            os.system('attrib +s +h +r +a IMPORTANT')   
 
 
 def encrypt(outfile):
@@ -39,10 +43,8 @@ def encrypt(outfile):
         f.write(texto)
     pass
 
-if __name__ == "__main__": 
-    import os
-    import sys        
-    os.chdir(sys.path[0])   
+if __name__ == "__main__":
+    os.chdir(sys.path[0])
     from pathlib import Path as p
     try:
         with open('filename.txt','r') as f:
