@@ -1,7 +1,4 @@
-﻿
-import os
-
-def readFile(filename):
+﻿def readFile(filename):
     with open(filename,'r', encoding='utf-8') as f:
         global inputext
         print(filename)
@@ -42,7 +39,10 @@ def encrypt(outfile):
         f.write(texto)
     pass
 
-if __name__ == "__main__":    
+if __name__ == "__main__": 
+    import os
+    import sys        
+    os.chdir(sys.path[0])   
     from pathlib import Path as p
     try:
         with open('filename.txt','r') as f:

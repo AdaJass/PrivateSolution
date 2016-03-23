@@ -45,7 +45,10 @@ def decrypt(outfile):
             f.write(texto)
         pass
 
-if __name__ == "__main__":    
+if __name__ == "__main__":  
+    import os
+    import sys        
+    os.chdir(sys.path[0])  
     from pathlib import Path as p, PurePath as pp
     try:
         with open('filename.txt','r') as f:
