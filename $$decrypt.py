@@ -71,4 +71,4 @@ if __name__ == "__main__":
                 if match:
                     readFile(str(x))
                     getPW()
-                    decrypt(str(x.name))         
+                    decrypt(str(x.name))           

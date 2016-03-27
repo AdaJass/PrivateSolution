@@ -1,8 +1,10 @@
+#-*- coding: utf-8 -*-
+
 import asyncio
 from pyquery import PyQuery as pq
 import config
-
 import json
+from datetime import datetime as dt, timedelta as td
 if config.MYSQL:
     import aiomysql
 
@@ -26,7 +28,8 @@ def Xm(data):
     print(ratioList)
     pass
 
-async def Asto(data):
+@asyncio.coroutine
+def Asto(data):
     data=json.loads(data[13:-1])
     data=data['data']['ratioList']
     ratioList={}
@@ -38,10 +41,25 @@ async def Asto(data):
 
     pass 
 
-async def Calendar(data):
+@asyncio.coroutine
+def Calendar(data):
     d=pq(data)
-    print(data)
+    s=d('tr[id^=eventRowId]')
+    f=open('Calendar.txt','w',encoding='utf-8')
+    for i in s.items():
+        tem=i('td.sentiment').attr('title')
+        if tem and tem[-1]=='高':
+            time=i.attr('event_timestamp')
+            t1=dt.strptime(time,'%Y-%m-%d %H:%M:%S')
+            t1=t1+td(hours=6)
+            time=dt.strftime(t1,'%Y-%m-%d %H:%M:%S')
+            t2=dt.now()
+            delta=t1-t2
+            if 0<=delta.days<2:                
+                f.write(time+'    ')
+                f.write(i('td.event').html()+'\n\n')
+    f.close()
     pass
 
 if __name__ == '__main__':
-    processData('<a>hello</a>')  
+    processData('<a>hello</a>')    

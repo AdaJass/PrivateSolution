@@ -70,4 +70,4 @@ if __name__ == "__main__":
                 getPW()
                 encrypt('./'+ss+'/'+str(x))
 
-             
+               
