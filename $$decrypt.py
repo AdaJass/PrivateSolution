@@ -1,5 +1,5 @@
 ﻿def readFile(filename):
-    with open(filename,'r', encoding='utf-8') as f:
+    with open(filename,'r', encoding='utf-8') as f: 
         global inputext
         print(filename)
         inputext=f.read()
@@ -52,11 +52,11 @@ if __name__ == "__main__":
     from pathlib import Path as p, PurePath as pp
     os.chdir(sys.path[0]) 
     try:
-        with open('filename.txt','r') as f:
+        with open('filename.txt','r',encoding='utf-8') as f:
             ss=f.read().strip()
     except:
         ss=input('请输入要解密文件夹名称：\n')
-        with open('filename.txt','w') as f:
+        with open('filename.txt','w',encoding='utf-8') as f:
             f.write(ss)
 
     if p('./'+ss).is_dir():    
