@@ -5,14 +5,39 @@ from pyquery import PyQuery as pq
 import config
 import json
 from datetime import datetime as dt, timedelta as td
-if config.MYSQL:
-    import aiomysql
+from aiomysql.sa import create_engine
+
+from model import *
+
 
 @asyncio.coroutine
-def processData(data):
+def Database(loop):
     '''
     data is from the http response in main module.
     '''
+    global engine
+    engine = yield from create_engine(user='jass',db='test',port=3306,\
+                                        host='127.0.0.1', password='11111')
+
+
+    yield from create_table(engine)
+
+    with (yield from engine) as conn:
+        yield from conn.execute(tbl.insert(),{"val":'abc',"id":1})
+
+        res = yield from conn.execute(tbl.select())
+        for row in res:
+            print(row.id, row.val)
+
+
+    pass
+
+
+@asyncio.coroutine
+def CloseDB():
+    engine.close()
+    yield from engine.wait_closed()
+
     
     pass
 
@@ -62,4 +87,4 @@ def Calendar(data):
     pass
 
 if __name__ == '__main__':
-    processData('<a>hello</a>')    
+    Xm('<a>hello</a>')    
