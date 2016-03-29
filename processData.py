@@ -84,9 +84,9 @@ def Calendar(data):
                 f.write(time+'    ')
                 country=i('td.flagCur span').attr('title')                
                 f.write(country+'   ')
-                f.write(i('td.event').html()+'\n\n')
+                f.write(i('td.event').text()+'\n\n')
     f.close()
     pass
 
 if __name__ == '__main__':
-    Xm('<a>hello</a>')    
+    Xm('<a>hello</a>')     

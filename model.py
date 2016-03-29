@@ -26,4 +26,4 @@ def create_table(engine):
         yield from conn.execute('DROP TABLE IF EXISTS tbl')
         yield from conn.execute('''CREATE TABLE tbl (
                                             id serial PRIMARY KEY,
-                                            val varchar(255))''')
+                                            val varchar(255))''') 
