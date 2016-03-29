@@ -16,9 +16,9 @@ xm= sa.Table('xm', metadata,
             sa.Column('OIL',sa.Float(8)),
             sa.Column('JP225',sa.Float(8)),
             sa.Column('SIL',sa.Float(8)),
-            sa.Column('',sa.Float(8)),
+            sa.Column('UU',sa.Float(8)),
             sa.Column('EUR',sa.Float(8)),
-            sa.Column('GBP',sa.Float(8)),
+            sa.Column('GBP',sa.Float(8))
     )
 
 def create_table(engine):

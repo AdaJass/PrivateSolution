@@ -16,8 +16,8 @@ def Database(loop):
     data is from the http response in main module.
     '''
     global engine
-    engine = yield from create_engine(user='jass',db='test',port=3306,\
-                                        host='127.0.0.1', password='11111')
+    engine = yield from create_engine(user='root',db='test',port=3306,\
+                                        host='127.0.0.1', password='')
 
 
     yield from create_table(engine)
@@ -76,12 +76,14 @@ def Calendar(data):
         if tem and tem[-1]=='高':
             time=i.attr('event_timestamp')
             t1=dt.strptime(time,'%Y-%m-%d %H:%M:%S')
-            t1=t1+td(hours=6)
+            t1=t1+td(hours=8)
             time=dt.strftime(t1,'%Y-%m-%d %H:%M:%S')
             t2=dt.now()
             delta=t1-t2
             if 0<=delta.days<2:                
                 f.write(time+'    ')
+                country=i('td.flagCur span').attr('title')                
+                f.write(country+'   ')
                 f.write(i('td.event').html()+'\n\n')
     f.close()
     pass

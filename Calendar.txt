@@ -1,16 +1,18 @@
-2016-03-29 20:00:00    谘商会消费者信心 (三月)
+2016-03-29 23:30:00    美国   美联储主席耶伦(Yellen)讲话                         <span class="audioIconNew newSiteIconsSprite" title="&#x8BB2;&#x8BDD;"> </span>
 
-2016-03-29 21:30:00    美联储主席耶伦(Yellen)讲话                         <span class="audioIconNew newSiteIconsSprite" title="&#x8BB2;&#x8BDD;"> </span>
+2016-03-30 20:15:00    美国   非农业就业人数变化 (三月)
 
-2016-03-30 18:15:00    非农业就业人数变化 (三月)
+2016-03-30 22:30:00    美国   原油库存
 
-2016-03-30 20:30:00    原油库存
+2016-03-31 15:00:00    英国   英国央行行长卡尼(Carney)讲话                         <span class="audioIconNew newSiteIconsSprite" title="&#x8BB2;&#x8BDD;"> </span>
 
-2016-03-31 13:00:00    英国央行行长卡尼(Carney)讲话                         <span class="audioIconNew newSiteIconsSprite" title="&#x8BB2;&#x8BDD;"> </span>
+2016-03-31 15:55:00    德国   德国失业人数变化 (三月)
 
-2016-03-31 13:55:00    德国失业人数变化 (三月)
+2016-03-31 16:30:00    英国   国内生产总值(GDP) (年度) (第四季度)
 
-2016-03-31 14:30:00    国内生产总值(GDP) (年度) (第四季度)
+2016-03-31 16:30:00    英国   国内生产总值(GDP) (季度) (第四季度)
 
-2016-03-31 14:30:00    国内生产总值(GDP) (季度) (第四季度)
+2016-03-31 17:00:00    欧元区   居民消费价格指数(CPI) (年度) (三月) <span class="smallGrayP newSiteIconsSprite" title="&#x521D;&#x6B65;&#x6570;&#x636E;"> </span>
+
+2016-03-31 20:30:00    加拿大   国内生产总值(GDP) (月度) (一月)
 
