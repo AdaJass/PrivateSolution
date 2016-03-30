@@ -5,6 +5,7 @@ import config
 import processData as pd
 import aiomysql as sql
 
+
 @asyncio.coroutine
 def fetchData(url, callback = pd.Xm, params=None):
     #set request url and parameters here or you can pass from outside.
@@ -35,7 +36,7 @@ if __name__ == '__main__':
     tasks = [        
         pd.Database(loop),
         fetchData('http://www.xm.com', pd.Xm),
-        fetchData('http://biz.aetoscg.com/content/get-ratio!callback.json?ln=0&group=TOOL&callback=showToolsLAS&_=1458550863266', pd.Asto),
+        fetchData('http://biz.aetoscg.com/content/get-ratio!callback.json?ln=0&group=TOOL&callback=showToolsLAS&_=1458550863266', pd.Atos),
         fetchData(calendar_url, pd.Calendar)
     ]    
     loop.run_until_complete(asyncio.wait(tasks))

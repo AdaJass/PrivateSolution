@@ -6,6 +6,8 @@ import config
 import json
 from datetime import datetime as dt, timedelta as td
 from aiomysql.sa import create_engine
+from datetime import datetime
+import random as rand
 
 from model import *
 
@@ -16,15 +18,16 @@ def Database(loop):
     data is from the http response in main module.
     '''
     global engine
-    engine = yield from create_engine(user='root',db='test',port=3306,\
-                                        host='127.0.0.1', password='')
+    engine = yield from create_engine(user='root',db='Currency',port=3306,\
+                                        host='127.0.0.1', password='11111',\
+                                        echo=True)
 
 
-    yield from create_table(engine)
+    create_table(engine)
 
     with (yield from engine) as conn:
-        yield from conn.execute(tbl.insert(),{"val":'abc',"id":1})
-
+        yield from conn.execute(tbl.insert(),{"val":'adsc',"id":rand.randint(0,1000000)})
+        
         res = yield from conn.execute(tbl.select())
         for row in res:
             print(row.id, row.val)
@@ -36,9 +39,7 @@ def Database(loop):
 @asyncio.coroutine
 def CloseDB():
     engine.close()
-    yield from engine.wait_closed()
-
-    
+    yield from engine.wait_closed()    
     pass
 
 @asyncio.coroutine
@@ -49,21 +50,41 @@ def Xm(data):
     for i in range(11):
         ratioList[d('b').eq(i).text()] = float(d('span').eq(i*2).attr('data-percentage'))
         pass     
+    #print(ratioList)  
+    ratioList['XAUUSD']=ratioList['GOLD']
+    ratioList['XAGUSD']=ratioList['SILVER']
+    ratioList['DATE']=datetime.now()
+    del ratioList['GOLD'] 
+    del ratioList['SILVER']
+
+    with (yield from engine) as conn:
+        yield from conn.execute(xm.insert(),ratioList)
         
-    print(ratioList)
+
+        res = yield from conn.execute(xm.select())
+        for row in res:
+            print(row)    
     pass
 
 @asyncio.coroutine
-def Asto(data):
+def Atos(data):
     data=json.loads(data[13:-1])
     data=data['data']['ratioList']
     ratioList={}
     for x in data:
         k=x['value'].split(':')
         ratioList[x['symbol']] = float(k[0][0:-1])
+    #print(ratioList)
+    ratioList['OIL']=ratioList['USOIL']
+    ratioList['DATE']=datetime.now()
+    del ratioList['USOIL']
+    del ratioList['UKOIL']
+    with (yield from engine) as conn:
+        yield from conn.execute(atos.insert(),ratioList)
 
-    print(ratioList)
-
+        res = yield from conn.execute(atos.select())
+        for row in res:
+            print(row)
     pass 
 
 @asyncio.coroutine
