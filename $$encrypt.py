@@ -59,7 +59,7 @@ if __name__ == "__main__":
         pass
     for x in p('.').iterdir():
         if x.is_file():
-            plist=['*.py', '*.txt', '*.js', '*.cpp', '*.c', '*.html','*.json', '*.bat']
+            plist=['*.py', '*.txt', '*.js', '*.cpp', '*.c', '*.html','*.json', '*.bat','*.sql']
             match=False
             for m in plist:
                 if x.match(m):
