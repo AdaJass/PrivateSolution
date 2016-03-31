@@ -44,7 +44,7 @@ atos = sa.Table('atos', metadata,
 def create_table(engine):
     with (yield from engine) as conn:
             yield from conn.execute('DROP TABLE IF EXISTS tbl')
-            yield from conn.execute('''CREATE TABLE xm (
+            yield from conn.execute('''CREATE TABLE tbl (
                                                 id serial PRIMARY KEY,
                                                 val varchar(255))''')
 

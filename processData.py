@@ -18,12 +18,12 @@ def Database(loop):
     data is from the http response in main module.
     '''
     global engine
-    engine = yield from create_engine(user='root',db='Currency',port=3306,\
+    engine = yield from create_engine(user='root',db='currency',port=3306,\
                                         host='127.0.0.1', password='11111',\
                                         echo=True)
 
 
-    create_table(engine)
+    yield from create_table(engine)
 
     with (yield from engine) as conn:
         yield from conn.execute(tbl.insert(),{"val":'adsc',"id":rand.randint(0,1000000)})
