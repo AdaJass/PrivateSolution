@@ -18,20 +18,20 @@ def Database(loop):
     data is from the http response in main module.
     '''
     global engine
-    engine = yield from create_engine(user='root',db='currency',port=3306,\
-                                        host='127.0.0.1', password='11111',\
-                                        echo=True)
+    engine = yield from create_engine(user='root',db='Currency',port=3306,
+                                     host='127.0.0.1', password='11111', 
+                                     loop=loop)
 
 
     yield from create_table(engine)
 
     with (yield from engine) as conn:
-        yield from conn.execute(tbl.insert(),{"val":'adsc',"id":rand.randint(0,1000000)})
+        yield from conn.execute("INSERT INTO tbl VALUES(1,'heavy metal')")
+        yield from conn.execute('commit')
         
         res = yield from conn.execute(tbl.select())
         for row in res:
             print(row.id, row.val)
-
 
     pass
 
@@ -59,7 +59,7 @@ def Xm(data):
 
     with (yield from engine) as conn:
         yield from conn.execute(xm.insert(),ratioList)
-        
+        yield from conn.execute('commit')
 
         res = yield from conn.execute(xm.select())
         for row in res:
@@ -81,6 +81,7 @@ def Atos(data):
     del ratioList['UKOIL']
     with (yield from engine) as conn:
         yield from conn.execute(atos.insert(),ratioList)
+        yield from conn.execute('commit')
 
         res = yield from conn.execute(atos.select())
         for row in res:
