@@ -13,27 +13,24 @@ from model import *
 
 
 @asyncio.coroutine
-def Database(loop):
+def Database(future):
     '''
     data is from the http response in main module.
     '''
     global engine
     engine = yield from create_engine(user='root',db='Currency',port=3306,
-                                     host='127.0.0.1', password='11111', 
-                                     loop=loop)
-
-
+                                     host='127.0.0.1', password='11111')
     yield from create_table(engine)
 
-    with (yield from engine) as conn:
-        yield from conn.execute("INSERT INTO tbl VALUES(1,'heavy metal')")
-        yield from conn.execute('commit')
+    # with (yield from engine) as conn:
+    #     yield from conn.execute("INSERT INTO tbl VALUES(1,'heavy metal')")
+    #     yield from conn.execute('commit')
         
-        res = yield from conn.execute(tbl.select())
-        for row in res:
-            print(row.id, row.val)
+    #     res = yield from conn.execute(tbl.select())
+    #     for row in res:
+    #         print(row.id, row.val)
 
-    pass
+    future.set_result(engine)
 
 
 @asyncio.coroutine
