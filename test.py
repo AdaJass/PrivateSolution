@@ -8,7 +8,7 @@ def add():
     global n
     n+=1
     yield from asyncio.sleep(1)
-    print(n,'\n\n')
+    # print(n,'\n\n')
 
 
 @asyncio.coroutine
@@ -19,16 +19,16 @@ def test():
     task=[add() for i in range(20)]
     # lloo.run_until_complete(asyncio.wait(task))
     # lloo.close()
-    print(n ,'\n\n')
+    # print(n ,'\n\n')
 
 loop = asyncio.get_event_loop()
 while  True:
     loop.run_until_complete(test())
     time.sleep(1)
-    print(dt.now().isoweekday())
+    # print(dt.now().isoweekday())
     delta=td(hours=8)
     timenow=dt.now()-delta
-    if timenow.isoweekday() == 5:
+    if timenow.isoweekday() == 6:
         break
     pass
 
