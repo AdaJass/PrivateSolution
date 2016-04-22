@@ -1,5 +1,6 @@
 import asyncio
 import time
+from datetime import datetime as dt, timedelta as td
 
 n=0
 @asyncio.coroutine
@@ -24,6 +25,11 @@ loop = asyncio.get_event_loop()
 while  True:
     loop.run_until_complete(test())
     time.sleep(1)
+    print(dt.now().isoweekday())
+    delta=td(hours=8)
+    timenow=dt.now()-delta
+    if timenow.isoweekday() == 5:
+        break
     pass
 
 loop.close()
