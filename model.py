@@ -5,9 +5,9 @@ global xm, atos
 
 metadata = sa.MetaData()
 
-tbl = sa.Table('tbl', metadata,
-               sa.Column('id', sa.Integer, primary_key=True),
-               sa.Column('val', sa.String(255)))
+# tbl = sa.Table('tbl', metadata,
+#                sa.Column('id', sa.Integer, primary_key=True),
+#                sa.Column('val', sa.String(255)))
 
 
 
@@ -40,11 +40,11 @@ atos = sa.Table('atos', metadata,
     )
 
 
-@asyncio.coroutine
-def create_table(engine):
-    with (yield from engine) as conn:
-            yield from conn.execute('DROP TABLE IF EXISTS tbl')
-            yield from conn.execute('''CREATE TABLE tbl (
-                                                id serial PRIMARY KEY,
-                                                val varchar(255))''')
+# @asyncio.coroutine
+# def create_table(engine):
+#     with (yield from engine) as conn:
+#             yield from conn.execute('DROP TABLE IF EXISTS tbl')
+#             yield from conn.execute('''CREATE TABLE tbl (
+#                                                 id serial PRIMARY KEY,
+#                                                 val varchar(255))''')
 

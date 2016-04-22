@@ -20,15 +20,15 @@ def Database(future):
     global engine
     engine = yield from create_engine(user='root',db='Currency',port=3306,
                                      host='127.0.0.1', password='11111')
-    yield from create_table(engine)
+    # yield from create_table(engine)
 
     # with (yield from engine) as conn:
-    #     yield from conn.execute("INSERT INTO tbl VALUES(1,'heavy metal')")
-    #     yield from conn.execute('commit')
-        
-    #     res = yield from conn.execute(tbl.select())
+    #     yield from conn.execute(tbl.insert().values(val='sag34'))
+    #     yield from conn.execute('commit')        
+    #     res = yield from conn.execute(tbl.select(tbl.c.id))
+    #     print('ok')
     #     for row in res:
-    #         print(row.id, row.val)
+    #         print(row.id)
 
     future.set_result(engine)
 

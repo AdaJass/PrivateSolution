@@ -1,29 +1,65 @@
 #-*- coding: utf-8 -*-
 
 import asyncio
-import config
-import json
-from datetime import datetime as dt, timedelta as td
-from processData import Database
-from model import *
 import matplotlib.pyplot as plt
+from model import *
 
 
-EURUSD=[]
+XM={
+    'EURUSD':[],
+    'USDJPY':[],
+    'GBPUSD':[],
+    'XAUUSD':[],
+    'XAGUSD':[],
+    'OIL':[],
+    'US30':[],
+    'JP225':[],
+    'EURJPY':[],
+    'GBPJPY':[],
+    'GER30':[]
+}
+ATOS={
+    'EURUSD':[],
+    'USDJPY':[],
+    'GBPUSD':[],
+    'XAUUSD':[],
+    'XAGUSD':[],
+    'OIL':[],
+    'US30':[],
+    'AUDUSD':[],
+    'HKG50':[]    
+}
 DATE=[]
 
-
 @asyncio.coroutine
-def Draw(engine):    
+def Draw(engine):
+    global DATE    
     with (yield from engine) as conn:        
         res = yield from conn.execute(xm.select())
         for row in res:
             DATE.append(row.DATE)
-            EURUSD.append(row.EURUSD)
+            for name in XM.keys():
+                XM[name].append(row[name])
 
-        fig=plt.figure()
-        plt.plot(DATE, EURUSD)
-        fig.autofmt_xdate()
-        plt.show()
+        for name in XM.keys():
+            fig=plt.figure()
+            plt.plot(DATE, XM[name])
+            fig.autofmt_xdate()
+            plt.savefig('./imagines/XM_'+ name+'.jpg')
+            plt.close()
+
+        DATE=[]
+        res = yield from conn.execute(atos.select())
+        for row in res:
+            DATE.append(row.DATE)            
+            for name in ATOS.keys():
+                ATOS[name].append(row[name])
+
+        for name in ATOS.keys():
+            fig=plt.figure()
+            plt.plot(DATE, ATOS[name])
+            fig.autofmt_xdate()
+            plt.savefig('./imagines/ATOS_'+ name+'.jpg')
+            plt.close()
       
     pass

@@ -41,9 +41,9 @@ if __name__ == '__main__':
     tasks = [
         fetchData('http://www.xm.com', pd.Xm),
         fetchData('http://biz.aetoscg.com/content/get-ratio!callback.json?ln=0&group=TOOL&callback=showToolsLAS&_=1458550863266', pd.Atos),
-        fetchData(calendar_url, pd.Calendar),
-        draw.Draw(engine)
+        fetchData(calendar_url, pd.Calendar)        
     ]    
     loop.run_until_complete(asyncio.wait(tasks))
+    loop.run_until_complete(draw.Draw(engine))
     loop.run_until_complete(pd.CloseDB())
     loop.close() 
