@@ -45,7 +45,7 @@ def Xm(data):
     d = d('div#dashboard-wrap')
     ratioList={}
     for i in range(11):
-        ratioList[d('b').eq(i).text()] = float(d('span').eq(i*2).attr('data-percentage'))
+        ratioList[d('b').eq(i).text()] = float(d('span').eq(i*2+1).attr('data-percentage'))
         pass     
     #print(ratioList)  
     ratioList['XAUUSD']=ratioList['GOLD']
@@ -70,7 +70,7 @@ def Atos(data):
     ratioList={}
     for x in data:
         k=x['value'].split(':')
-        ratioList[x['symbol']] = float(k[0][0:-1])
+        ratioList[x['symbol']] = float(k[1][0:-1])
     #print(ratioList)
     ratioList['OIL']=ratioList['USOIL']
     ratioList['DATE']=datetime.now()

@@ -1,16 +1,31 @@
 import asyncio
+import time
+
+n=0
+@asyncio.coroutine
+def add():
+    global n
+    n+=1
+    yield from asyncio.sleep(1)
+    print(n,'\n\n')
+
 
 @asyncio.coroutine
-def slow_operation(future):
-    future.set_result('Future is done!')
-    yield from asyncio.sleep(5)
-    future.set_result('Future are done!')
+def test():
+    global n
+    yield from asyncio.sleep(1)
+    # lloo=asyncio.get_event_loop()
+    task=[add() for i in range(20)]
+    # lloo.run_until_complete(asyncio.wait(task))
+    # lloo.close()
+    print(n ,'\n\n')
 
 loop = asyncio.get_event_loop()
-future = asyncio.Future()
-asyncio.ensure_future(slow_operation(future))
-loop.run_until_complete(future)
-print(future.result())
+while  True:
+    loop.run_until_complete(test())
+    time.sleep(1)
+    pass
+
 loop.close()
 
 '''

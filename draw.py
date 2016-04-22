@@ -3,37 +3,33 @@
 import asyncio
 import matplotlib.pyplot as plt
 from model import *
-
-
-XM={
-    'EURUSD':[],
-    'USDJPY':[],
-    'GBPUSD':[],
-    'XAUUSD':[],
-    'XAGUSD':[],
-    'OIL':[],
-    'US30':[],
-    'JP225':[],
-    'EURJPY':[],
-    'GBPJPY':[],
-    'GER30':[]
-}
-ATOS={
-    'EURUSD':[],
-    'USDJPY':[],
-    'GBPUSD':[],
-    'XAUUSD':[],
-    'XAGUSD':[],
-    'OIL':[],
-    'US30':[],
-    'AUDUSD':[],
-    'HKG50':[]    
-}
-DATE=[]
-
 @asyncio.coroutine
 def Draw(engine):
-    global DATE    
+    XM={
+        'EURUSD':[],
+        'USDJPY':[],
+        'GBPUSD':[],
+        'XAUUSD':[],
+        'XAGUSD':[],
+        'OIL':[],
+        'US30':[],
+        'JP225':[],
+        'EURJPY':[],
+        'GBPJPY':[],
+        'GER30':[]
+    }
+    ATOS={
+        'EURUSD':[],
+        'USDJPY':[],
+        'GBPUSD':[],
+        'XAUUSD':[],
+        'XAGUSD':[],
+        'OIL':[],
+        'US30':[],
+        'AUDUSD':[],
+        'HKG50':[]    
+    }
+    DATE=[]
     with (yield from engine) as conn:        
         res = yield from conn.execute(xm.select())
         for row in res:
