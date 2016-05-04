@@ -3,6 +3,7 @@
 import asyncio
 import matplotlib.pyplot as plt
 from model import *
+import os
 @asyncio.coroutine
 def Draw(engine):
     XM={
@@ -57,5 +58,9 @@ def Draw(engine):
             fig.autofmt_xdate()
             plt.savefig('./imagines/ATOS_'+ name+'.jpg')
             plt.close()
-      
+    os.system('copy imagines\\*.*  ..\\HotIO\\public\\private_images')      
     pass
+
+if __name__ == '__main__':
+	os.system('copy imagines\\*.*  ..\\HotIO\\public\\private_images')
+	
