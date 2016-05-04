@@ -32,7 +32,7 @@ def Draw(engine):
     }
     DATE=[]
     with (yield from engine) as conn:        
-        res = yield from conn.execute(xm.select())
+        res = yield from conn.execute(xm.select().order_by(xm.c.DATE))
         for row in res:
             DATE.append(row.DATE)
             for name in XM.keys():
@@ -46,7 +46,7 @@ def Draw(engine):
             plt.close()
 
         DATE=[]
-        res = yield from conn.execute(atos.select())
+        res = yield from conn.execute(atos.select().order_by(atos.c.DATE))
         for row in res:
             DATE.append(row.DATE)            
             for name in ATOS.keys():
