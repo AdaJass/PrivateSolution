@@ -2,8 +2,21 @@
 
 import asyncio
 import matplotlib.pyplot as plt
+from datetime import datetime as dt, timedelta as td
 from model import *
 import os
+
+
+@asyncio.coroutine
+def delData(engine):
+    thrashold=dt.now()-td(days=1.5)
+    with (yield from engine) as conn:
+        yield from conn.execute(xm.delete().where(xm.c.DATE<thrashold))
+        yield from conn.execute(atos.delete().where(atos.c.DATE<thrashold))
+        yield from conn.execute('commit')
+    pass
+
+
 @asyncio.coroutine
 def Draw(engine):
     XM={
@@ -51,6 +64,9 @@ def Draw(engine):
             DATE.append(row.DATE)            
             for name in ATOS.keys():
                 ATOS[name].append(row[name])
+
+        if(len(DATE)>430 or max(DATE)-min(DATE)> td(days=2.5)):
+            yield from delData(engine) 
 
         for name in ATOS.keys():
             fig=plt.figure()
