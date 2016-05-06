@@ -12,6 +12,7 @@ def delData(engine):
     thrashold=dt.now()-td(days=1.5)
     with (yield from engine) as conn:
         yield from conn.execute(xm.delete().where(xm.c.DATE<thrashold))
+        yield from conn.execute('commit')
         yield from conn.execute(atos.delete().where(atos.c.DATE<thrashold))
         yield from conn.execute('commit')
     pass
