@@ -42,10 +42,11 @@ def CloseDB():
 @asyncio.coroutine
 def Xm(data):
     d = pq(data)
-    d = d('div#dashboard-wrap')
+    d = d('div#dashboard-wrap')    
     ratioList={}
     for i in range(11):
-        ratioList[d('b').eq(i).text()] = float(d('span').eq(i*2+1).attr('data-percentage'))
+        if d('span').eq(i*2+1).attr('data-percentage'):
+            ratioList[d('b').eq(i).text()] = float(d('span').eq(i*2+1).attr('data-percentage'))
         pass     
     #print(ratioList)  
     ratioList['XAUUSD']=ratioList['GOLD']
@@ -105,6 +106,7 @@ def Calendar(data):
                 f.write(country+'   ')
                 f.write(i('td.event').text()+'\n\n')
     f.close()
+    
     pass
 
 

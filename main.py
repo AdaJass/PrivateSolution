@@ -44,8 +44,12 @@ if __name__ == '__main__':
         future = asyncio.Future()
         asyncio.ensure_future(pd.Database(future))
         loop.run_until_complete(future)
-        engine = future.result()
-        loop.run_until_complete(asyncio.wait(tasks))
+        engine = future.result() 
+        try:
+          	loop.run_until_complete(asyncio.wait(tasks))
+        except Exception:
+           	continue 
+                    
         loop.run_until_complete(draw.Draw(engine))
         loop.run_until_complete(pd.CloseDB())
         n+=1

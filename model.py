@@ -9,6 +9,8 @@ metadata = sa.MetaData()
 #                sa.Column('id', sa.Integer, primary_key=True),
 #                sa.Column('val', sa.String(255)))
 
+
+
 xm = sa.Table('xm', metadata,
             sa.Column('DATE',sa.DateTime, primary_key=True),
             sa.Column('EURUSD',sa.Float(8)),
