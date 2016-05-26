@@ -45,9 +45,12 @@ def Xm(data):
     d = d('div#dashboard-wrap')    
     ratioList={}
     for i in range(11):
-        if d('span').eq(i*2+1).attr('data-percentage'):
-            ratioList[d('b').eq(i).text()] = float(d('span').eq(i*2+1).attr('data-percentage'))
-        pass     
+        seltct=d('i.red-bar-nbr').eq(i).text()
+        if seltct:
+            ratioList[d('b').eq(i).text()] = float(seltct)
+        pass 
+        print(seltct) 
+
     #print(ratioList)  
     ratioList['XAUUSD']=ratioList['GOLD']
     ratioList['XAGUSD']=ratioList['SILVER']
