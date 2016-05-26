@@ -6,10 +6,10 @@ from datetime import datetime as dt, timedelta as td
 from model import *
 import os
 
+thrashold=dt.now()-td(days=4)
 
 @asyncio.coroutine
-def delData(engine):
-    thrashold=dt.now()-td(days=1.5)
+def delData(engine):    
     with (yield from engine) as conn:
         yield from conn.execute(xm.delete().where(xm.c.DATE<thrashold))
         yield from conn.execute(atos.delete().where(atos.c.DATE<thrashold))
@@ -45,7 +45,7 @@ def Draw(engine):
     }
     DATE=[]
     with (yield from engine) as conn:        
-        res = yield from conn.execute(xm.select().order_by(xm.c.DATE))
+        res = yield from conn.execute(xm.select().where(xm.c.DATE>thrashold).order_by(xm.c.DATE))
         for row in res:
             DATE.append(row.DATE)
             for name in XM.keys():
@@ -59,14 +59,14 @@ def Draw(engine):
             plt.close()
 
         DATE=[]
-        res = yield from conn.execute(atos.select().order_by(atos.c.DATE))
+        res = yield from conn.execute(atos.select().where(atos.c.DATE>thrashold).order_by(atos.c.DATE))
         for row in res:
             DATE.append(row.DATE)            
             for name in ATOS.keys():
                 ATOS[name].append(row[name])
 
-        if(len(DATE)>430 or max(DATE)-min(DATE)> td(days=2.5)):
-            yield from delData(engine) 
+        # if(len(DATE)>430 or max(DATE)-min(DATE)> td(days=2.5)):
+        #     yield from delData(engine) 
 
         for name in ATOS.keys():
             fig=plt.figure()

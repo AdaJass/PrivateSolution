@@ -49,7 +49,7 @@ def Xm(data):
         if seltct:
             ratioList[d('b').eq(i).text()] = float(seltct)
         pass 
-        print(seltct) 
+        #print(seltct) 
 
     #print(ratioList)  
     ratioList['XAUUSD']=ratioList['GOLD']
