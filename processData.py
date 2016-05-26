@@ -63,8 +63,8 @@ def Xm(data):
         yield from conn.execute('commit')
 
         res = yield from conn.execute(xm.select())
-        for row in res:
-            print(row)    
+        # for row in res:
+        #     print(row)    
     pass
 
 @asyncio.coroutine
@@ -85,8 +85,8 @@ def Atos(data):
         yield from conn.execute('commit')
 
         res = yield from conn.execute(atos.select())
-        for row in res:
-            print(row)
+        # for row in res:
+        #     print(row)
     pass 
 
 @asyncio.coroutine
