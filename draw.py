@@ -74,10 +74,10 @@ def Draw(engine):
             fig.autofmt_xdate()
             plt.savefig('./imagines/ATOS_'+ name+'.jpg')
             plt.close()
-    os.system('copy imagines\\*.*  ..\\HotIO\\private\\private_images')
-    os.system('copy Calendar.txt ..\\\\HotIO\\private\\')      
+    os.system('copy imagines\\*.*  ..\\HotIO\\public\\public_images')
+    os.system('copy Calendar.txt ..\\\\HotIO\\public\\')      
     pass
 
 if __name__ == '__main__':
-    os.system('copy Calendar.txt ..\\\\HotIO\\private\\')
-    os.system('copy imagines\\*.*  ..\\HotIO\\private\\private_images')
+    os.system('copy Calendar.txt ..\\\\HotIO\\public\\')
+    os.system('copy imagines\\*.*  ..\\HotIO\\public\\private_images')
