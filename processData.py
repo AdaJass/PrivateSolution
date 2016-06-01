@@ -103,7 +103,7 @@ def Calendar(data):
             time=dt.strftime(t1,'%Y-%m-%d %H:%M:%S')
             t2=dt.now()
             delta=t1-t2
-            if 0<=delta.days<2:                
+            if -1<=delta.days<2:                
                 f.write(time+'    ')
                 country=i('td.flagCur span').attr('title')                
                 f.write(country+'   ')

@@ -4,9 +4,12 @@ import asyncio
 import matplotlib.pyplot as plt
 from datetime import datetime as dt, timedelta as td
 from model import *
-import os
+import os,sys
+from pathlib import Path as p
+import shutil as sh
 
 thrashold=dt.now()-td(days=4)
+currentpath=os.getcwd()
 
 @asyncio.coroutine
 def delData(engine):    
@@ -74,10 +77,25 @@ def Draw(engine):
             fig.autofmt_xdate()
             plt.savefig('./imagines/ATOS_'+ name+'.jpg')
             plt.close()
-    os.system('copy imagines\\*.*  ..\\HotIO\\public\\private_images')
-    os.system('copy Calendar.txt ..\\\\HotIO\\public\\')      
-    pass
+
+    for x in p('./imagines').iterdir():
+        if x.is_file():
+            src='.\\imagines\\'+x.name
+            dst='..\\HotIO\\public\\private_images\\'
+            sh.copy(src,dst+x.name)    
+        pass
+
+    sh.copy('.\\Calendar.txt', '..\\HotIO\\public\\Calendar.txt') 
 
 if __name__ == '__main__':
-    os.system('copy Calendar.txt ..\\\\HotIO\\public\\')
-    os.system('copy imagines\\*.*  ..\\HotIO\\public\\private_images')
+    for x in p('./imagines').iterdir():
+        if x.is_file():
+            src='.\\imagines\\'+x.name
+            print(src)
+            dst='..\\HotIO\\public\\private_images\\'
+            sh.copy(src,dst+x.name)    
+        pass
+    
+    sh.copy('.\\Calendar.txt', '..\\HotIO\\public\\Calendar.txt') 
+    # os.system('copy Calendar.txt ..\\\\HotIO\\public\\')
+    # os.system('copy imagines\\*.*  ..\\HotIO\\public\\private_images')
