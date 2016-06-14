@@ -42,11 +42,15 @@ def CloseDB():
 @asyncio.coroutine
 def Xm(data):
     d = pq(data)
-    d = d('div#dashboard-wrap')
+    d = d('div#dashboard-wrap')    
     ratioList={}
     for i in range(11):
-        ratioList[d('b').eq(i).text()] = float(d('span').eq(i*2+1).attr('data-percentage'))
-        pass     
+        seltct=d('i.red-bar-nbr').eq(i).text()
+        if seltct:
+            ratioList[d('b').eq(i).text()] = float(seltct)
+        pass 
+        #print(seltct) 
+
     #print(ratioList)  
     ratioList['XAUUSD']=ratioList['GOLD']
     ratioList['XAGUSD']=ratioList['SILVER']
@@ -59,8 +63,8 @@ def Xm(data):
         yield from conn.execute('commit')
 
         res = yield from conn.execute(xm.select())
-        for row in res:
-            print(row)    
+        # for row in res:
+        #     print(row)    
     pass
 
 @asyncio.coroutine
@@ -81,8 +85,8 @@ def Atos(data):
         yield from conn.execute('commit')
 
         res = yield from conn.execute(atos.select())
-        for row in res:
-            print(row)
+        # for row in res:
+        #     print(row)
     pass 
 
 @asyncio.coroutine
@@ -99,12 +103,13 @@ def Calendar(data):
             time=dt.strftime(t1,'%Y-%m-%d %H:%M:%S')
             t2=dt.now()
             delta=t1-t2
-            if 0<=delta.days<2:                
+            if -1<=delta.days<2:                
                 f.write(time+'    ')
                 country=i('td.flagCur span').attr('title')                
                 f.write(country+'   ')
                 f.write(i('td.event').text()+'\n\n')
     f.close()
+    
     pass
 
 
