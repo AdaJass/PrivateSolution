@@ -1,0 +1,212 @@
+﻿//+------------------------------------------------------------------+
+//|                                                  NewsCatcher.mq4 |
+//|                        Copyright 2015, MetaQuotes Software Corp. |
+//|                                             https://www.mql5.com |
+//+------------------------------------------------------------------+
+#property copyright "Copyright 2015, MetaQuotes Software Corp."
+#property link      "https://www.mql5.com"
+#property version   "1.00"
+#property strict
+
+enum BUY_SELL
+{
+   BUY,
+   SELL
+};
+
+input datetime PENDING_TIME;//做单时间。
+input datetime NEWSTIME;  //新闻公布时间
+input int LOW_GAP=300;   //止损点
+input int HIGH_GAP=700;  //止盈点
+input double LOTS=0.01; //下单手数，默认投入总金额的0.8
+input int MODIFY_SECOND=20; //新闻公布前，多少秒修改一次订单
+input int MODIFY_SECOND_AFTERNEWS=5; //新闻公布后，多少秒一次修改订单
+input BUY_SELL BUY_OR_SELL=BUY;
+
+double lots=0.0;
+int modify_gap=0;
+int scale=int(MathCeil(1/Point));
+bool waitForDeal;
+int timegap;
+bool waitForModify;
+int modtimegap;
+datetime now;
+datetime dealtime;
+bool haddeal;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+  {
+//---   
+   lots=LOTS;
+   modify_gap=MODIFY_SECOND;
+   if(LOTS == 0.01)
+      lots = 0.8*AccountFreeMargin()/MarketInfo(Symbol(),MODE_MARGINREQUIRED);
+   dealtime=TimeCurrent();
+   haddeal=false;
+   timegap=-1000;
+   modtimegap=10000;
+   waitForDeal=false;
+   waitForModify=false;
+   now=TimeCurrent();
+   EventSetMillisecondTimer(100);
+   if(!IsTradeAllowed()) Alert("Trade is not allowed");   
+//---
+   return(INIT_SUCCEEDED);
+  }
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+  {
+//---
+   EventKillTimer();
+   
+  }
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   now=TimeCurrent();
+   int remainSecond=int(NEWSTIME-now);
+   int passSecond=int(now-NEWSTIME);
+   
+   if(remainSecond<10&&passSecond<3600)
+      modify_gap=MODIFY_SECOND_AFTERNEWS;
+   else
+      modify_gap=MODIFY_SECOND;
+      
+   int gap=int(now-PENDING_TIME)*10;     
+   if(waitForDeal==false&&gap>=-500&&gap<=0){
+      if(gap>timegap)
+         timegap=gap;         
+      waitForDeal=true;     
+   }else if(gap>200){
+      timegap=-100000;  
+      waitForDeal=false;
+   }
+   
+   if(!waitForModify&&remainSecond<10&&remainSecond>0){
+      if(modtimegap<remainSecond*10)
+         modtimegap=remainSecond*10;         
+      waitForModify=true;     
+   }else if(remainSecond<-50){
+      modtimegap=100000;  
+      waitForModify=false;
+   }
+   
+   int delta=int(now-dealtime);
+   //Print(delta," is delta.");
+   if(OrdersTotal()<1)
+      haddeal=false;
+   else
+      haddeal=true;
+   int ordersall=0;
+   if(haddeal){ 
+      //Print("hjjjjjjjjjjjjjjjj");     
+      for(int i=0,all=OrdersTotal();i<all;i++){
+         if(!OrderSelect(i,SELECT_BY_POS,MODE_TRADES))
+            continue; 
+         if(OrderSymbol()==Symbol())
+            ordersall++;
+      }
+      //Print("My all orders are: ",ordersall);
+      if(ordersall<1){      
+         haddeal=false;         
+      }
+   }    
+      
+   if(haddeal&&remainSecond<5&&ordersall%2==0){       
+      dealtime=now;   
+      for(int ii=0,all=OrdersTotal();ii<all;ii++){               
+         if(!OrderSelect(ii,SELECT_BY_POS,MODE_TRADES))
+            continue;
+            
+         if(OrderSymbol()!=Symbol())
+            continue;
+            
+         if(BUY_OR_SELL==BUY&&OrderType()==OP_BUY)
+            if(!OrderModify(OrderTicket(),OrderOpenPrice(),Ask-LOW_GAP*Point,Ask+HIGH_GAP*Point,0,clrYellow))
+               Print("order modify fail ",GetLastError());
+                                    
+         if(BUY_OR_SELL==SELL&&OrderType()==OP_SELL)
+            if(!OrderModify(OrderTicket(),OrderOpenPrice(),Bid+LOW_GAP*Point,Bid-HIGH_GAP*Point,0,clrYellow))
+               Print("order modify fail ",GetLastError());          
+      }     
+      
+   } 
+   if(haddeal&&TimeCurrent()>NEWSTIME&&ordersall%2==1){   
+      for(int ii=0,all=OrdersTotal();ii<all;ii++){               
+         if(!OrderSelect(ii,SELECT_BY_POS,MODE_TRADES))
+            continue;
+            
+         if(OrderSymbol()!=Symbol())
+            continue;            
+            
+         if(OrderType()==OP_BUY&&BUY_OR_SELL==BUY&&OrderStopLoss()<Ask -(LOW_GAP+10)*Point){
+            if(OrderProfit()/lots<LOW_GAP){            
+               if(!OrderModify(OrderTicket(),OrderOpenPrice(),Ask-150*Point,OrderTakeProfit(),0,clrYellow))
+                  Print("order modify fail ",OrderTicket()); 
+            }else if(!OrderModify(OrderTicket(),OrderOpenPrice(),Ask-LOW_GAP*Point,OrderTakeProfit(),0,clrYellow))
+               Print("order modify fail ",OrderTicket()); 
+         }                          
+         if(OrderType()==OP_SELL&&BUY_OR_SELL==SELL&&OrderStopLoss()>Bid+(LOW_GAP+10)*Point){
+            if(OrderProfit()/lots<LOW_GAP){
+               if(!OrderModify(OrderTicket(),OrderOpenPrice(),Bid+150*Point,OrderTakeProfit(),0,clrYellow))
+                  Print("order modify fail ",OrderTicket()); 
+            }else if(!OrderModify(OrderTicket(),OrderOpenPrice(),Bid+LOW_GAP*Point,OrderTakeProfit(),0,clrYellow))
+               Print("order modify fail ",OrderTicket());  
+         }  
+      }
+   } 
+}
+//+------------------------------------------------------------------+
+
+void OnTimer(){
+   if(waitForDeal){ 
+      if(timegap>-20&&timegap<-5)
+         Print(timegap);     
+      ///////////////////////////////////////////////////////////////////////////////////////////////////
+      if(++timegap==-10)
+      { 
+         if(BUY_OR_SELL==BUY){                       
+            if(!OrderSend(Symbol(),OP_BUY,lots,Ask,10,0,0,"My order",16384,0,clrWhite)){            
+               Print(GetLastError());
+            }
+         }
+         if(BUY_OR_SELL==SELL){
+            if(!OrderSend(Symbol(),OP_SELL,lots,Bid,10,0,0,"My order",16384,0,clrBlue)){
+               Print(GetLastError()); 
+            }
+         }
+         dealtime=TimeCurrent();
+         haddeal=true;       
+      }
+      ////////////////////////////////////////////////////////////////////
+   }
+   
+   if(waitForModify){
+      if(--modtimegap<30&&modtimegap>9){
+         for(int ii=0,all=OrdersTotal();ii<all;ii++){               
+            if(!OrderSelect(ii,SELECT_BY_POS,MODE_TRADES))
+               continue;
+               
+            if(OrderSymbol()!=Symbol())
+               continue;
+               
+            RefreshRates();
+               
+            if(BUY_OR_SELL==BUY&&OrderType()==OP_BUY)
+               if(!OrderModify(OrderTicket(),OrderOpenPrice(),Ask-LOW_GAP*Point,Ask+HIGH_GAP*Point,0,clrYellow))
+                  Print("order modify fail ",GetLastError());
+                                       
+            if(BUY_OR_SELL==SELL&&OrderType()==OP_SELL)
+               if(!OrderModify(OrderTicket(),OrderOpenPrice(),Bid+LOW_GAP*Point,Bid-HIGH_GAP*Point,0,clrYellow))
+                  Print("order modify fail ",GetLastError());          
+         }     
+      }
+   }
+}        
