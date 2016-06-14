@@ -1,2 +1,2 @@
 cd C:\Users\Administrator\Desktop\HOT\privatesolution
-main.py
+start main.py

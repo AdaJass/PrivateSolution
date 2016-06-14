@@ -8,7 +8,7 @@ import os,sys
 from pathlib import Path as p
 import shutil as sh
 
-thrashold=dt.now()-td(days=4)
+thrashold=dt.now()-td(days=3)
 currentpath=os.getcwd()
 
 @asyncio.coroutine
